@@ -10,12 +10,19 @@ namespace GameOfLife
 
         public Cell Get(int x, int y)
         {
-            return _state[(x, y)];
+            try
+            {
+                return _state[(x, y)];
+            }
+            catch (KeyNotFoundException)
+            {
+                return null;
+            }
         }
 
-        public void Add(int x, int y, Cell cell)
+        public void Add(Cell cell)
         {
-            _state[(x, y)] = cell;
+            _state[(cell.X, cell.Y)] = cell;
         }
 
         public bool Remove(int x, int y)
@@ -28,9 +35,9 @@ namespace GameOfLife
             return _state.ContainsKey((x, y));
         }
 
-        public IEnumerator GetEnumerator()
+        public IEnumerator GetEnumerator() //TODO: Make type work???
         {
-            return _state.GetEnumerator();
+            return _state.Values.GetEnumerator();
         }
     }
 }
