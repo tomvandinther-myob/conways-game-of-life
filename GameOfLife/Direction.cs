@@ -3,8 +3,12 @@ namespace GameOfLife
     public enum Direction
     {
         North,
+        Northeast,
         East,
+        Southeast,
         South,
-        West
+        Southwest,
+        West,
+        Northwest
     }
 }
