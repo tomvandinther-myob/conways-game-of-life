@@ -10,7 +10,7 @@ namespace GameOfLife
         private readonly int xGridSize;
         private readonly int yGridSize;
 
-        public GridPrinter(int yGridSize, int xGridSize)
+        public GridPrinter(int xGridSize, int yGridSize)
         {
             this.yGridSize = yGridSize;
             this.xGridSize = xGridSize;
