@@ -7,13 +7,14 @@ namespace GameOfLife
 {
     public class GridPrinter
     {
-        private readonly int xGridSize;
-        private readonly int yGridSize;
+        private readonly int _xGridSize;
+        private readonly int _yGridSize;
+        private const char CellChar = '▓';
 
         public GridPrinter(int xGridSize, int yGridSize)
         {
-            this.yGridSize = yGridSize;
-            this.xGridSize = xGridSize;
+            this._yGridSize = yGridSize;
+            this._xGridSize = xGridSize;
         }
 
         public string Print(CellDictionary aliveCells)
@@ -22,8 +23,8 @@ namespace GameOfLife
             
             foreach (Cell cell in aliveCells)
             {
-                var stringIndex = cell.Y * (xGridSize + 1) + cell.X;
-                gridString[stringIndex] = '▓';
+                var stringIndex = cell.Y * (_xGridSize + 1) + cell.X;
+                gridString[stringIndex] = CellChar;
             }
 
             return gridString.ToString();
@@ -33,9 +34,9 @@ namespace GameOfLife
         {
             var gridString = new StringBuilder();
 
-            for (int i = 0; i < xGridSize; i++)
+            for (int i = 0; i < _xGridSize; i++)
             {
-                for (int j = 0; j < yGridSize; j++)
+                for (int j = 0; j < _yGridSize; j++)
                 {
                     gridString.Append(' ');                    
                 }

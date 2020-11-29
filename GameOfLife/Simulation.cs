@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading;
 
 namespace GameOfLife
@@ -7,13 +8,14 @@ namespace GameOfLife
         Running,
         Stopped
     }
+    
     public class Simulation
     {
         private int _tickCount = 0;
-        private int _maxIterations;
+        private readonly int _maxIterations;
         private PlayState _playState = PlayState.Stopped;
-        private GridPrinter _gridPrinter;
-        private God _god;
+        private readonly GridPrinter _gridPrinter;
+        private readonly God _god;
 
         public Simulation(int maxIterations, GridPrinter gridPrinter, God god)
         {
@@ -49,11 +51,10 @@ namespace GameOfLife
 
         private void Tick()
         {
-            var cellDictionary = new CellDictionary();
-            var lifeCandidates = _god.TakeLife(cellDictionary);
-            _god.GiveLife(lifeCandidates, cellDictionary);
-            cellDictionary.CommitStaged();
-            _gridPrinter.Print(cellDictionary);
+            var newDictSet = new HashSet<Coordinate>();
+            var lifeCandidates = _god.TakeLife(_god.CellDictionary, newDictSet);
+            _god.GiveLife(lifeCandidates, newDictSet);
+            _gridPrinter.Print(_god.CellDictionary);
             _tickCount++;
         }
 
@@ -61,8 +62,15 @@ namespace GameOfLife
         {
             while (_playState == PlayState.Running)
             {
-                Tick();
-                Thread.Sleep(200);
+                if (_tickCount < _maxIterations)
+                {
+                    Tick();
+                    Thread.Sleep(200);
+                }
+                else
+                {
+                    break;
+                }
             }
         }
     }
