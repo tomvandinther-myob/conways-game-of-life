@@ -28,6 +28,9 @@ namespace GameOfLife
                 new Coordinate(3, 3)
             };
             
+            Console.WriteLine(args[0]);
+            var textParser = new TextParser(args[0], new HashSet<char>{'@', '#'});
+            
             // Funky Randomness
             // var initialState = new HashSet<Coordinate>
             // {
@@ -58,7 +61,7 @@ namespace GameOfLife
             var simulation = new Simulation(
                 maxIterations, 
                 new ConsoleRenderer(),
-                new God(initialState)
+                new God(textParser.InitialState)
                 );
             simulation.Start();
         }
