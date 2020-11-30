@@ -4,7 +4,7 @@ using System.Threading;
 
 namespace GameOfLife
 {
-    enum PlayState
+    internal enum PlayState
     {
         Running,
         Stopped
@@ -15,15 +15,14 @@ namespace GameOfLife
         private int _tickCount = 0;
         private readonly int _maxIterations;
         private PlayState _playState = PlayState.Stopped;
-        private readonly GridPrinter _gridPrinter;
+        private readonly IRenderer _renderer;
         private readonly God _god;
 
-        public Simulation(int maxIterations, GridPrinter gridPrinter, God god)
+        public Simulation(int maxIterations, IRenderer renderer, God god)
         {
             _maxIterations = maxIterations;
-            _gridPrinter = gridPrinter;
+            _renderer = renderer;
             _god = god;
-            // Simulation should stop when Main thread stops.
             var simulationThread = new Thread(Simulate) {IsBackground = false};
             simulationThread.Start();
         }
@@ -53,19 +52,20 @@ namespace GameOfLife
         private void Tick()
         {
             var newDictSet = new HashSet<Coordinate>();
-            var lifeCandidates = _god.TakeLife(_god.CellDictionary, newDictSet);
+            var lifeCandidates = _god.TakeLife(newDictSet);
             _god.GiveLife(lifeCandidates, newDictSet);
             _tickCount++;
         }
 
         private void Render()
         {
-            _gridPrinter.Print(_god.CellDictionary);
+            _renderer.Render(_god.CellDictionary);
         }
         
         private void Simulate()
         {
             Render();
+            Thread.Sleep(1000);
             while (true)
             {
                 while (_playState == PlayState.Running)

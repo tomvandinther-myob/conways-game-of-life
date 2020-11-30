@@ -4,18 +4,18 @@ namespace GameOfLife
 {
     public class God
     {
-        public CellDictionary CellDictionary { get; set; }
+        public CellDictionary CellDictionary { get; private set; }
         
         public God(HashSet<Coordinate> initialState)
         {
             CellDictionary = GenerateCellDictionary(initialState);
         }
 
-        public LifeCandidates TakeLife(CellDictionary cellDictionary, HashSet<Coordinate> newDictSet)
+        public LifeCandidates TakeLife(HashSet<Coordinate> newDictSet)
         {
             var lifeCandidates = new LifeCandidates();
 
-            foreach (Cell cell in cellDictionary)
+            foreach (var cell in CellDictionary)
             {
                 lifeCandidates.AddCandidates(cell.GetEmptyNeighbours());
 
@@ -32,7 +32,7 @@ namespace GameOfLife
         
         public void GiveLife(LifeCandidates lifeCandidates, HashSet<Coordinate> newDictSet)
         {
-            foreach (LifeCandidate candidate in lifeCandidates)
+            foreach (var candidate in lifeCandidates)
             {
                 if (candidate.AliveNeighbours == 3)
                 {
@@ -43,13 +43,13 @@ namespace GameOfLife
             CellDictionary = GenerateCellDictionary(newDictSet);
         }
 
-        private CellDictionary GenerateCellDictionary(HashSet<Coordinate> newDictSet)
+        private static CellDictionary GenerateCellDictionary(HashSet<Coordinate> newDictSet)
         {
             var newCellDict = new CellDictionary();
             
             foreach (var coordinate in newDictSet)
             {
-                newCellDict.Add(Cell.CreateCell(coordinate, newDictSet));    
+                newCellDict.Add(Cell.FromCoordinateSet(coordinate, newDictSet));    
             }
 
             return newCellDict;

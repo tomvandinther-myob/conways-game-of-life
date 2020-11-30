@@ -6,24 +6,24 @@ namespace GameOfLife
 {
     public class Cell
     {
-        private static int directionEnumLength = Enum.GetNames<Direction>().Length;
-        private bool[] _neighbours = new bool[directionEnumLength];
+        private readonly bool[] _neighbours = new bool[Enum.GetNames<Direction>().Length];
         public int X { get; }
         public int Y { get; }
 
-        public Cell(Coordinate coordinate)
+        private Cell(Coordinate coordinate)
         {
             X = coordinate.X;
             Y = coordinate.Y;
         }
         
-        public static Cell CreateCell(Coordinate coordinate, HashSet<Coordinate> newDictSet)
+        public static Cell FromCoordinateSet(Coordinate coordinate, HashSet<Coordinate> newDictSet)
         {
             var cell = new Cell(coordinate);
 
             foreach (var direction in Enum.GetValues<Direction>())
             {
                 var proposedNeighbour = coordinate.GetOffsetCoordinate(direction);
+                
                 if (newDictSet.Contains(proposedNeighbour))
                 {
                     cell.SetNeighbour(direction);
@@ -33,7 +33,7 @@ namespace GameOfLife
             return cell;
         }
 
-        public void SetNeighbour(Direction direction)
+        private void SetNeighbour(Direction direction)
         {
             _neighbours[(int) direction] = true;
         }
@@ -43,7 +43,7 @@ namespace GameOfLife
             return _neighbours.Count(exists => exists);
         }
         
-        public List<Coordinate> GetEmptyNeighbours()
+        public IEnumerable<Coordinate> GetEmptyNeighbours()
         {
             var emptyNeighbours = new List<Coordinate>();
             

@@ -19,20 +19,18 @@ namespace GameOfLife
     }
     public class LifeCandidates : IEnumerable<LifeCandidate>
     {
-        Dictionary<Coordinate, LifeCandidate> candidateSet = new Dictionary<Coordinate, LifeCandidate>();
+        private readonly Dictionary<Coordinate, LifeCandidate> _candidateSet = new Dictionary<Coordinate, LifeCandidate>();
         
-        public int AliveNeighbours { get; set; }
-
         public void AddCandidate(Coordinate coordinate)
         {
             try
             {
-                var candidate = candidateSet[coordinate];
+                var candidate = _candidateSet[coordinate];
                 candidate.AliveNeighbours++;
             }
             catch (KeyNotFoundException)
             {
-                candidateSet[coordinate] = new LifeCandidate(coordinate);
+                _candidateSet[coordinate] = new LifeCandidate(coordinate);
             }
         }
 
@@ -46,7 +44,7 @@ namespace GameOfLife
         
         public IEnumerator<LifeCandidate> GetEnumerator()
         {
-            return candidateSet.Values.GetEnumerator();
+            return _candidateSet.Values.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()

@@ -28,6 +28,23 @@ namespace GameOfLife
                 new Coordinate(3, 3)
             };
             
+            // Funky Randomness
+            // var initialState = new HashSet<Coordinate>
+            // {
+            //     new Coordinate(1, 2),
+            //     new Coordinate(2, 2),
+            //     new Coordinate(3, 2),
+            //     new Coordinate(3, 2),
+            //     new Coordinate(2, 2),
+            //     new Coordinate(1, 1),
+            //     new Coordinate(4, 3),
+            //     new Coordinate(5, 4),
+            //     new Coordinate(6, 3),
+            //     new Coordinate(6, 4),
+            //     new Coordinate(5, 3),
+            //     new Coordinate(4, 4)
+            // };
+
             // /* Oscillator
             //  
             //  */
@@ -40,7 +57,7 @@ namespace GameOfLife
 
             var simulation = new Simulation(
                 maxIterations, 
-                new GridPrinter(new ConsoleRenderer(), xGridSize, yGridSize),
+                new ConsoleRenderer(),
                 new God(initialState)
                 );
             simulation.Start();

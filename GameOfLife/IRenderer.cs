@@ -2,6 +2,6 @@ namespace GameOfLife
 {
     public interface IRenderer
     {
-        public void Write(string output){}
+        public void Render(CellDictionary simulationOutput){}
     }
 }

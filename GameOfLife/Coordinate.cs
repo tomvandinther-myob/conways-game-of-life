@@ -1,5 +1,4 @@
-using System;
-using System.Drawing;
+#nullable enable
 
 namespace GameOfLife
 {
@@ -11,7 +10,7 @@ namespace GameOfLife
         public int X { get; private set; }
         public int Y { get; private set; }
 
-        private (int X, int Y)[] _offsets =
+        private readonly (int X, int Y)[] _offsets =
         {
             (0, -1), // North
             (1, -1), // Northeast
