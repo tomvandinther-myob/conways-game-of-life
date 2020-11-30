@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading;
 
@@ -23,7 +24,7 @@ namespace GameOfLife
             _gridPrinter = gridPrinter;
             _god = god;
             // Simulation should stop when Main thread stops.
-            var simulationThread = new Thread(Simulate) {IsBackground = true};
+            var simulationThread = new Thread(Simulate) {IsBackground = false};
             simulationThread.Start();
         }
 
@@ -54,23 +55,33 @@ namespace GameOfLife
             var newDictSet = new HashSet<Coordinate>();
             var lifeCandidates = _god.TakeLife(_god.CellDictionary, newDictSet);
             _god.GiveLife(lifeCandidates, newDictSet);
-            _gridPrinter.Print(_god.CellDictionary);
             _tickCount++;
         }
 
+        private void Render()
+        {
+            _gridPrinter.Print(_god.CellDictionary);
+        }
+        
         private void Simulate()
         {
-            while (_playState == PlayState.Running)
+            Render();
+            while (true)
             {
-                if (_tickCount < _maxIterations)
+                while (_playState == PlayState.Running)
                 {
-                    Tick();
-                    Thread.Sleep(200);
+                    if (_tickCount < _maxIterations)
+                    {
+                        Tick();
+                        Render();
+                        Thread.Sleep(100);
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
-                else
-                {
-                    break;
-                }
+                Thread.Sleep(100);
             }
         }
     }

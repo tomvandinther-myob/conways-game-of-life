@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace GameOfLife
 {
-    public class CellDictionary : IEnumerable
+    public class CellDictionary : IEnumerable<Cell>
     {
         private readonly Dictionary<(int, int), Cell> _state = new Dictionary<(int, int), Cell>();
 
@@ -35,9 +35,14 @@ namespace GameOfLife
             return _state.ContainsKey((x, y));
         }
 
-        public IEnumerator GetEnumerator() //TODO: Make type work???
+        public IEnumerator<Cell> GetEnumerator()
         {
             return _state.Values.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }

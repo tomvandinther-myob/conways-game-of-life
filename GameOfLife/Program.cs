@@ -7,9 +7,12 @@ namespace GameOfLife
     {
         static void Main(string[] args)
         {
-            var maxIterations = 100;
-            var xGridSize = 10;
-            var yGridSize = 10;
+            var maxIterations = 1000;
+            var xGridSize = 100;
+            var yGridSize = 20;
+
+            Coordinate.XGridSize = xGridSize;
+            Coordinate.YGridSize = yGridSize;
 
             /* Glider
                ▓
@@ -24,13 +27,21 @@ namespace GameOfLife
                 new Coordinate(3, 2),
                 new Coordinate(3, 3)
             };
-
             
+            // /* Oscillator
+            //  
+            //  */
+            // var initialState = new HashSet<Coordinate>
+            // {
+            //     new Coordinate(4, 0),
+            //     new Coordinate(0, 0),
+            //     new Coordinate(3, 0)
+            // };
 
             var simulation = new Simulation(
                 maxIterations, 
-                new GridPrinter(xGridSize, yGridSize),
-                new God(new CellFactory(xGridSize, yGridSize), initialState)
+                new GridPrinter(new ConsoleRenderer(), xGridSize, yGridSize),
+                new God(initialState)
                 );
             simulation.Start();
         }

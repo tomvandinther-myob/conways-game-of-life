@@ -4,18 +4,18 @@ using System.Collections.Generic;
 
 namespace GameOfLife
 {
-    public struct LifeCandidate
+    public class LifeCandidate
     {
+        public int X { get; }
+        public int Y { get; }
+        public int AliveNeighbours { get; set; }
+        
         public LifeCandidate(Coordinate coordinate)
         {
             X = coordinate.X;
             Y = coordinate.Y;
-            AliveNeighbours = 0;
+            AliveNeighbours = 1;
         }
-        
-        public int X { get; }
-        public int Y { get; }
-        public int AliveNeighbours { get; set; }
     }
     public class LifeCandidates : IEnumerable<LifeCandidate>
     {
@@ -51,7 +51,7 @@ namespace GameOfLife
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return candidateSet.Values.GetEnumerator();
+            return GetEnumerator();
         }
     }
 }

@@ -9,15 +9,17 @@ namespace GameOfLife
     {
         private readonly int _xGridSize;
         private readonly int _yGridSize;
-        private const char CellChar = '▓';
+        private readonly IRenderer _outputStream;
+        private const char CellChar = '@'; //'▓';
 
-        public GridPrinter(int xGridSize, int yGridSize)
+        public GridPrinter(IRenderer outputStream, int xGridSize, int yGridSize)
         {
-            this._yGridSize = yGridSize;
-            this._xGridSize = xGridSize;
+            _yGridSize = yGridSize;
+            _xGridSize = xGridSize;
+            _outputStream = outputStream;
         }
 
-        public string Print(CellDictionary aliveCells)
+        public void Print(CellDictionary aliveCells)
         {
             var gridString = new StringBuilder(GetEmptyGridString());
             
@@ -27,23 +29,25 @@ namespace GameOfLife
                 gridString[stringIndex] = CellChar;
             }
 
-            return gridString.ToString();
+            _outputStream.Write(gridString.ToString());
         }
 
         private string GetEmptyGridString()
         {
             var gridString = new StringBuilder();
 
-            for (int i = 0; i < _xGridSize; i++)
+            for (int i = 0; i < _yGridSize; i++)
             {
-                for (int j = 0; j < _yGridSize; j++)
+                for (int j = 0; j < _xGridSize; j++)
                 {
-                    gridString.Append(' ');                    
+                    gridString.Append(' ');
                 }
-                gridString.Append('\n');    
+                gridString.Append('\n');
             }
 
-            gridString.Length--; // Remove the last '\n'
+            // Remove the last '\n'
+            gridString.Length--;
+            
             return gridString.ToString();
         }
     }

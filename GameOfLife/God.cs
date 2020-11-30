@@ -4,12 +4,10 @@ namespace GameOfLife
 {
     public class God
     {
-        private CellFactory _cellFactory;
         public CellDictionary CellDictionary { get; set; }
         
-        public God(CellFactory cellFactory, HashSet<Coordinate> initialState)
+        public God(HashSet<Coordinate> initialState)
         {
-            _cellFactory = cellFactory;
             CellDictionary = GenerateCellDictionary(initialState);
         }
 
@@ -51,7 +49,7 @@ namespace GameOfLife
             
             foreach (var coordinate in newDictSet)
             {
-                newCellDict.Add(_cellFactory.CreateCell(coordinate, newDictSet));    
+                newCellDict.Add(Cell.CreateCell(coordinate, newDictSet));    
             }
 
             return newCellDict;
