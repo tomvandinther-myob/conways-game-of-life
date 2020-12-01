@@ -16,12 +16,14 @@ namespace GameOfLife
         private readonly int _maxIterations;
         private PlayState _playState = PlayState.Stopped;
         private readonly IRenderer _renderer;
+        private readonly IController _controller;
         private readonly God _god;
 
-        public Simulation(int maxIterations, IRenderer renderer, God god)
+        public Simulation(int maxIterations, IRenderer renderer, IController controller, God god)
         {
             _maxIterations = maxIterations;
             _renderer = renderer;
+            _controller = controller;
             _god = god;
             var simulationThread = new Thread(Simulate) {IsBackground = false};
             simulationThread.Start();
