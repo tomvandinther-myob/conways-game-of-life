@@ -18,8 +18,6 @@ namespace GameOfLife
 
         public void Render(CellDictionary simulationOutput)
         {
-            var stringBuilder = new StringBuilder();
-
             var rowList = new List<List<char>>();
             
             foreach (var cell in simulationOutput)
@@ -40,6 +38,8 @@ namespace GameOfLife
 
                 rowList[y][x] = AliveChar;
             }
+            
+            var stringBuilder = new StringBuilder();
             
             foreach (var row in rowList)
             {

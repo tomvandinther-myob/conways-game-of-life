@@ -14,7 +14,6 @@ namespace GameOfLife
             Coordinate.XGridSize = xGridSize;
             Coordinate.YGridSize = yGridSize;
 
-            Console.WriteLine(args[0]);
             var textParser = new TextParser(args[0], new HashSet<char>{'@', '#'});
 
             var simulation = new Simulation(
