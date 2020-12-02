@@ -13,7 +13,7 @@ namespace GameOfLife
     
     public class Simulation
     {
-        private int _tickCount = 0;
+        private int _iteration = 0;
         private readonly int? _maxIterations = null;
         private PlayState _playState = PlayState.Stopped;
         private readonly IClock _clock;
@@ -28,9 +28,8 @@ namespace GameOfLife
             _controller = controller;
             _god = god;
 
-            _controller.TogglePlayState += TogglePlayState;
-            _controller.Play += Start;
-            _controller.Stop += Stop;
+            _controller.TogglePlayState += TogglePlayStateEventHandler;
+            _controller.Reset += ResetEventHandler;
             
             _clock.Tick += Tick;
             _clock.Start();
@@ -44,31 +43,16 @@ namespace GameOfLife
             _maxIterations = maxIterations;
         }
 
-        public void Start(object? sender, EventArgs eventArgs)
+        public void ResetEventHandler(object? sender, EventArgs eventArgs)
         {
-            _tickCount = 0;
-            _playState = PlayState.Running;
+            _god.LoadInitialState();
+            _iteration = 0;
+            Render();
         }
 
-        public void TogglePlayState(object? sender, EventArgs eventArgs)
+        public void TogglePlayStateEventHandler(object? sender, EventArgs eventArgs)
         {
             _playState = _playState != PlayState.Running ? PlayState.Running : PlayState.Stopped;
-        }
-
-        public void Stop(object? sender, EventArgs eventArgs)
-        {
-            _playState = PlayState.Stopped;
-            _tickCount = 0;
-        }
-
-        public void Resume()
-        {
-            _playState = PlayState.Running;
-        }
-
-        public void Pause()
-        {
-            _playState = PlayState.Stopped;
         }
 
         private void Tick(object? sender, int tickCount)
@@ -78,7 +62,7 @@ namespace GameOfLife
             
             if (_maxIterations is not null && !(tickCount <= _maxIterations)) return;
 
-            _tickCount++;
+            _iteration++;
             var newDictSet = new HashSet<Coordinate>();
             var lifeCandidates = _god.TakeLife(newDictSet);
             _god.GiveLife(lifeCandidates, newDictSet);
@@ -88,7 +72,7 @@ namespace GameOfLife
 
         private void Render()
         {
-            _renderer.Render(_god.CellDictionary);
+            _renderer.Render(_iteration, _god.CellDictionary);
         }
     }
 }

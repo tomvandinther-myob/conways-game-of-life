@@ -17,7 +17,7 @@ namespace GameOfLife
         private const char DeadChar = ' ';
         public string Out { get; private set; }
         
-        public void Render(CellDictionary simulationOutput)
+        public void Render(int iteration, CellDictionary simulationOutput)
         {
             var rowList = new List<List<char>>();
             

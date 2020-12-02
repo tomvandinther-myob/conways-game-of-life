@@ -10,20 +10,33 @@ namespace GameOfLife
             Coordinate.XGridSize = 100;
             Coordinate.YGridSize = 20;
 
-            // var textParser = new TextParser(args[0], new HashSet<char>{'@', '#'});
+            var textParser = new TextParser(args[0], new HashSet<char>{'@', '#'});
 
             var definedStates = new DefinedInitialStates(StatePattern.Glider);
             
-            var clock = new Clock(){ClockSpeed = ClockSpeed.Normal};
+            var clock = new Clock(){ClockSpeed = ClockSpeed.Fast};
             var controller = new ConsoleKeyboardController();
+
+            IRenderer renderer;
+            
+            if (args.Length > 1)
+            {
+                var cellChar = char.Parse(args[1]);
+                renderer = new ConsoleRenderer(cellChar);
+            }
+            else
+            {
+                renderer = new ConsoleRenderer();
+            }
             
             var simulation = new Simulation(
                 clock,
-                new ConsoleRenderer(),
+                renderer,
                 controller,
-                new God(definedStates.InitialState)
+                new God(textParser.InitialState)
                 );
             
+            // Listen is a blocking method. Exiting from this method exits the main thread.
             controller.Listen();
         }
     }

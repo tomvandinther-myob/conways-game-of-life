@@ -2,6 +2,6 @@ namespace GameOfLife
 {
     public interface IRenderer
     {
-        void Render(CellDictionary simulationOutput);
+        void Render(int iteration, CellDictionary simulationOutput);
     }
 }

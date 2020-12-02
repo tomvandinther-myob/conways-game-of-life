@@ -31,7 +31,8 @@ namespace GameOfLife.Tests
                 new God(definedStates.InitialState)
                 );
 
-            simulation.Start(null, null);
+            // Invoke handler
+            simulation.TogglePlayStateEventHandler(null, null);
             
             clock.TickMany(ticks);
 

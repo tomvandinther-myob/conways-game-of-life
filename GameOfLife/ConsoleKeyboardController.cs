@@ -4,10 +4,7 @@ namespace GameOfLife
 {
     public class ConsoleKeyboardController : IController
     {
-        public event EventHandler Play;
-        public event EventHandler Stop;
-        public event EventHandler Resume;
-        public event EventHandler Pause;
+        public event EventHandler Reset;
         public event EventHandler TogglePlayState;
 
         public void Listen()
@@ -23,22 +20,17 @@ namespace GameOfLife
                     case ConsoleKey.Spacebar:
                         OnTogglePlayState();
                         break;
-                    case ConsoleKey.S:
-                        OnStop();
+                    case ConsoleKey.R:
+                        OnReset();
                         break;
                 }
                 
             } while (cki.Key != ConsoleKey.Escape);
         }
 
-        private void OnStop()
+        private void OnReset()
         {
-            Stop?.Invoke(this, EventArgs.Empty);
-        }
-
-        private void OnPlay()
-        {
-            Play?.Invoke(this, EventArgs.Empty);
+            Reset?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnTogglePlayState()

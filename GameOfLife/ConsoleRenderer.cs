@@ -9,8 +9,8 @@ namespace GameOfLife
     {
         private readonly StringRenderer _stringRenderer;
         private readonly char _cellChar;
-        private const string Title = @"
-   ___                          _                  
+        private const string Title = 
+@"   ___                          _                  
   / __|___ _ ___ __ ____ _ _  _( )___              
  | (__/ _ \ ' \ V  V / _` | || |/(_-<              
   \___\___/_||_\_/\_/\__,_|\_, |_/__/    _  __     
@@ -31,18 +31,21 @@ namespace GameOfLife
             _stringRenderer = new StringRenderer(_cellChar);
         }
 
-        public void Render(CellDictionary simulationOutput)
+        public void Render(int iteration, CellDictionary simulationOutput)
         {
-            _stringRenderer.Render(simulationOutput);
-            Write(_stringRenderer.Out);
+            _stringRenderer.Render(iteration, simulationOutput);
+            Write(iteration, _stringRenderer.Out);
         }
         
-        private static void Write(string output)
+        private static void Write(int iteration, string output)
         {
             Console.Clear();
             Console.ForegroundColor = ConsoleColor.Green;
             Console.Write(Title);
-            Console.WriteLine("------------------------------------------------------");
+            Console.WriteLine("\n        Spacebar: Play/Pause | R: Reset | Esc: Exit");
+            Console.WriteLine(" -----------------------------------------------------------");
+            Console.WriteLine("                       Iteration: " + iteration);
+            Console.WriteLine(" -----------------------------------------------------------");
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.Write(output);
         }

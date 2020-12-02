@@ -24,7 +24,7 @@ namespace GameOfLife
         public Clock()
         {
             ClockSpeed = ClockSpeed.Normal;
-            _clockThread = new Thread(Run);
+            _clockThread = new Thread(Run){ IsBackground = true };
         }
 
         public void Start()
