@@ -7,8 +7,18 @@ namespace GameOfLife
         public static int XGridSize { get; set; }
         public static int YGridSize { get; set; }
 
-        public int X { get; private set; }
-        public int Y { get; private set; }
+        private int _x;
+        private int _y;
+        
+        public int X
+        {
+            get => _x;
+            private set => _x = Mod(value, XGridSize); }
+        public int Y
+        {
+            get => _y;
+            private set => _y = Mod(value, YGridSize);
+        }
 
         private readonly (int X, int Y)[] _offsets =
         {
@@ -24,12 +34,13 @@ namespace GameOfLife
 
         public Coordinate(int x, int y)
         {
-            X = Mod(x, XGridSize);
-            Y = Mod(y, YGridSize);
+            X = x;
+            Y = y;
         }
 
         private static int Mod(int n, int m)
         {
+            if (m <= 0) return n;
             return n < 0 ? ((n % m) + m) % m : n % m;
         }
         
@@ -42,10 +53,8 @@ namespace GameOfLife
         public void OffsetTo(Direction direction)
         {
             var (x, y) = _offsets[(int) direction];
-            var newX = Mod(X + x, XGridSize);
-            var newY = Mod(Y + y, YGridSize);
-            X = newX;
-            Y = newY;
+            X += x;
+            Y += y;
         }
 
         public override int GetHashCode()

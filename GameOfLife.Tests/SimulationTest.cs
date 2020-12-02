@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Threading;
 using Xunit;
 
@@ -8,38 +9,33 @@ namespace GameOfLife.Tests
 {
     public class SimulationTest
     {
-        [Fact]
-        public void Simulation_Glider_SingleIteration()
+        [Theory]
+        [InlineData(1, " #\n #\n #")]
+        [InlineData(2, "\n###")]
+        public void Simulation_Blinker_ShouldIterate(int ticks, string expectedOutput)
         {
-            var textParser = new TextParser("", new HashSet<char>{'#'});
-            var stringInput = new []
-            {
-                "-#-",
-                "-#-",
-                "-#-"
-            };
-            
             Coordinate.XGridSize = 10;
             Coordinate.YGridSize = 10;
             
+            var definedStates = new DefinedInitialStates(StatePattern.Blinker);
+
+            var stringRenderer = new StringRenderer('#');
+            
+            var clock = new ManualClock();
+
             var simulation = new Simulation(
-                1,
-                new ConsoleRenderer(),
-                new KeyboardController(),
-                new God(textParser.ParseFromString(stringInput))
+                ticks,
+                clock,
+                stringRenderer,
+                new ConsoleKeyboardController(),
+                new God(definedStates.InitialState)
                 );
 
-            var sw = new StringWriter();
-            Console.SetOut(sw);
+            simulation.Start(null, null);
             
-            simulation.Start();
-            Thread.Sleep(1200);
+            clock.TickMany(ticks);
 
-            var outputString = sw.ToString();
-
-            var expectedString = "\n▓▓▓";
-            
-            Assert.Equal(expectedString, outputString);
+            Assert.Equal(expectedOutput, stringRenderer.Out);
         }
     }
 }

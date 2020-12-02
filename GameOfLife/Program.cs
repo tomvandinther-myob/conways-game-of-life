@@ -7,22 +7,24 @@ namespace GameOfLife
     {
         static void Main(string[] args)
         {
-            var maxIterations = 1000;
-            var xGridSize = 100;
-            var yGridSize = 20;
+            Coordinate.XGridSize = 100;
+            Coordinate.YGridSize = 20;
 
-            Coordinate.XGridSize = xGridSize;
-            Coordinate.YGridSize = yGridSize;
+            // var textParser = new TextParser(args[0], new HashSet<char>{'@', '#'});
 
-            var textParser = new TextParser(args[0], new HashSet<char>{'@', '#'});
-
+            var definedStates = new DefinedInitialStates(StatePattern.Glider);
+            
+            var clock = new Clock(){ClockSpeed = ClockSpeed.GottaGoFast};
+            var controller = new ConsoleKeyboardController();
+            
             var simulation = new Simulation(
-                maxIterations, 
+                clock,
                 new ConsoleRenderer(),
-                new KeyboardController(),
-                new God(textParser.InitialState)
+                controller,
+                new God(definedStates.InitialState)
                 );
-            simulation.Start();
+            
+            controller.Listen();
         }
     }
 }
