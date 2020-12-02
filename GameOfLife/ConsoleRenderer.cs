@@ -7,8 +7,17 @@ namespace GameOfLife
 {
     public class ConsoleRenderer : IRenderer
     {
-        private StringRenderer _stringRenderer;
-        private char _cellChar;
+        private readonly StringRenderer _stringRenderer;
+        private readonly char _cellChar;
+        private const string Title = @"
+   ___                          _                  
+  / __|___ _ ___ __ ____ _ _  _( )___              
+ | (__/ _ \ ' \ V  V / _` | || |/(_-<              
+  \___\___/_||_\_/\_/\__,_|\_, |_/__/    _  __     
+    / __|__ _ _ __  ___   _|__/ _| | |  (_)/ _|___ 
+   | (_ / _` | '  \/ -_) / _ \  _| | |__| |  _/ -_)
+    \___\__,_|_|_|_\___| \___/_|   |____|_|_| \___|                              
+";
 
         public ConsoleRenderer()
         {
@@ -31,6 +40,10 @@ namespace GameOfLife
         private static void Write(string output)
         {
             Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.Write(Title);
+            Console.WriteLine("------------------------------------------------------");
+            Console.ForegroundColor = ConsoleColor.Cyan;
             Console.Write(output);
         }
     }

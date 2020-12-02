@@ -14,7 +14,7 @@ namespace GameOfLife
 
             var definedStates = new DefinedInitialStates(StatePattern.Glider);
             
-            var clock = new Clock(){ClockSpeed = ClockSpeed.GottaGoFast};
+            var clock = new Clock(){ClockSpeed = ClockSpeed.Normal};
             var controller = new ConsoleKeyboardController();
             
             var simulation = new Simulation(
